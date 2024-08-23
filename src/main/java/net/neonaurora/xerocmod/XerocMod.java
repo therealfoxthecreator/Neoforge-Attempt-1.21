@@ -1,5 +1,6 @@
 package net.neonaurora.xerocmod;
 
+import net.neonaurora.xerocmod.item.ModItem;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -52,6 +53,8 @@ public class XerocMod
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        ModItem.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -65,7 +68,9 @@ public class XerocMod
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItem.PEBBLE);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
